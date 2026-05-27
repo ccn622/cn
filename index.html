@@ -19,7 +19,14 @@ body{
 
 h1{
     text-align:center;
-    margin-bottom:30px;
+    margin-bottom:20px;
+}
+
+#status{
+    text-align:center;
+    margin-bottom:20px;
+    color:#0f0;
+    font-size:14px;
 }
 
 .grid{
@@ -47,16 +54,10 @@ h1{
 }
 
 #time{
-    margin-top:30px;
+    margin-top:25px;
     text-align:center;
     color:#888;
     font-size:14px;
-}
-
-#status{
-    text-align:center;
-    margin-bottom:20px;
-    color:#0f0;
 }
 
 </style>
@@ -118,7 +119,16 @@ h1{
 
 let ws;
 
+let lastTimeText = "";
+let lastTimeUpdate = Date.now();
+
 function connectWS(){
+
+    try{
+        if(ws){
+            ws.close();
+        }
+    }catch(e){}
 
     document.getElementById("status").innerText =
         "连接中...";
@@ -132,6 +142,7 @@ function connectWS(){
         document.getElementById("status").innerText =
             "已连接";
 
+        lastTimeUpdate = Date.now();
     };
 
     ws.onmessage = (e) => {
@@ -140,43 +151,80 @@ function connectWS(){
 
             const data = JSON.parse(e.data);
 
-            if(data["黄金"] !== undefined)
-                document.getElementById("gold").innerText =
-                    data["黄金"];
+            // 心跳包
+            if(data.type === "ping"){
+                lastTimeUpdate = Date.now();
+                return;
+            }
 
-            if(data["白银"] !== undefined)
-                document.getElementById("silver").innerText =
-                    data["白银"];
+            // 时间更新
+            if(data["时间"]){
 
-            if(data["铂金"] !== undefined)
-                document.getElementById("platinum").innerText =
-                    data["铂金"];
-
-            if(data["钯金"] !== undefined)
-                document.getElementById("palladium").innerText =
-                    data["钯金"];
-
-            if(data["Au999"] !== undefined)
-                document.getElementById("au999").innerText =
-                    data["Au999"];
-
-            if(data["18K"] !== undefined)
-                document.getElementById("k18").innerText =
-                    data["18K"];
-
-            if(data["Pt950"] !== undefined)
-                document.getElementById("pt950").innerText =
-                    data["Pt950"];
-
-            if(data["Pd990"] !== undefined)
-                document.getElementById("pd990").innerText =
-                    data["Pd990"];
-
-            if(data["时间"])
                 document.getElementById("time").innerText =
                     data["时间"];
 
+                if(data["时间"] !== lastTimeText){
+
+                    lastTimeText = data["时间"];
+
+                    lastTimeUpdate = Date.now();
+                }
+            }
+
+            // 黄金
+            if(data["黄金"] !== undefined){
+
+                const g = parseFloat(data["黄金"]);
+
+                document.getElementById("gold").innerText =
+                    g.toFixed(2);
+
+                document.getElementById("au999").innerText =
+                    (g * 0.999).toFixed(2);
+
+                document.getElementById("k18").innerText =
+                    (g * 0.7475).toFixed(2);
+            }
+
+            // 白银
+            if(data["白银"] !== undefined){
+
+                document.getElementById("silver").innerText =
+                    parseFloat(data["白银"]).toFixed(2);
+            }
+
+            // 铂金
+            if(data["铂金"] !== undefined){
+
+                const p = parseFloat(data["铂金"]);
+
+                document.getElementById("platinum").innerText =
+                    p.toFixed(2);
+
+                document.getElementById("pt950").innerText =
+                    (p * 0.942).toFixed(2);
+            }
+
+            // 钯金
+            if(data["钯金"] !== undefined){
+
+                const d = parseFloat(data["钯金"]);
+
+                document.getElementById("palladium").innerText =
+                    d.toFixed(2);
+
+                document.getElementById("pd990").innerText =
+                    (d * 0.9499).toFixed(2);
+            }
+
         }catch(err){}
+
+    };
+
+    ws.onerror = () => {
+
+        document.getElementById("status").innerText =
+            "连接错误";
 
     };
 
@@ -191,14 +239,36 @@ function connectWS(){
 
     };
 
-    ws.onerror = () => {
+}
+
+// 检测假死
+
+setInterval(() => {
+
+    const diff =
+        Date.now() - lastTimeUpdate;
+
+    // 超过8秒
+    if(diff > 8000){
 
         document.getElementById("status").innerText =
-            "连接错误";
+            "数据延迟中...";
+    }
 
-    };
+    // 超过15秒
+    if(diff > 15000){
 
-}
+        document.getElementById("status").innerText =
+            "数据卡死，重连中...";
+
+        try{
+            ws.close();
+        }catch(e){}
+
+        connectWS();
+    }
+
+}, 3000);
 
 connectWS();
 
