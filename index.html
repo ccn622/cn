@@ -119,6 +119,8 @@ h1{
 
 let ws;
 
+let reconnecting = false;
+
 let lastTimeText = "";
 let lastTimeUpdate = Date.now();
 
@@ -132,6 +134,8 @@ function connectWS(){
     );
 
     ws.onopen = () => {
+
+        reconnecting = false;
 
         document.getElementById("status").innerText =
             "已连接";
@@ -162,6 +166,10 @@ function connectWS(){
                     lastTimeText = data["时间"];
 
                     lastTimeUpdate = Date.now();
+
+                    // 数据恢复后显示已连接
+                    document.getElementById("status").innerText =
+                        "已连接";
                 }
             }
 
@@ -217,41 +225,48 @@ function connectWS(){
 
     ws.onerror = () => {
 
-        document.getElementById("status").innerText =
-            "连接错误";
+        if(!reconnecting){
+
+            document.getElementById("status").innerText =
+                "连接错误";
+        }
 
     };
 
     ws.onclose = () => {
 
-        document.getElementById("status").innerText =
-            "连接断开";
+        if(!reconnecting){
+
+            document.getElementById("status").innerText =
+                "连接断开";
+        }
 
     };
 
 }
 
-// 每3秒检查一次是否假死
+// 每3秒检查一次
 
 setInterval(() => {
 
     const diff =
         Date.now() - lastTimeUpdate;
 
-    // 超过8秒
-    if(diff > 8000){
+    // 8秒无更新
+    if(diff > 8000 && !reconnecting){
 
         document.getElementById("status").innerText =
             "数据延迟中...";
     }
 
-    // 超过15秒
-    if(diff > 15000){
+    // 15秒无更新
+    if(diff > 15000 && !reconnecting){
+
+        reconnecting = true;
 
         document.getElementById("status").innerText =
             "数据卡死，页面重载中...";
 
-        // 彻底刷新页面
         setTimeout(() => {
 
             location.reload();
