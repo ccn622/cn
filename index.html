@@ -124,12 +124,6 @@ let lastTimeUpdate = Date.now();
 
 function connectWS(){
 
-    try{
-        if(ws){
-            ws.close();
-        }
-    }catch(e){}
-
     document.getElementById("status").innerText =
         "连接中...";
 
@@ -231,17 +225,13 @@ function connectWS(){
     ws.onclose = () => {
 
         document.getElementById("status").innerText =
-            "连接断开，重连中...";
-
-        setTimeout(() => {
-            connectWS();
-        }, 1000);
+            "连接断开";
 
     };
 
 }
 
-// 检测假死
+// 每3秒检查一次是否假死
 
 setInterval(() => {
 
@@ -259,13 +249,14 @@ setInterval(() => {
     if(diff > 15000){
 
         document.getElementById("status").innerText =
-            "数据卡死，重连中...";
+            "数据卡死，页面重载中...";
 
-        try{
-            ws.close();
-        }catch(e){}
+        // 彻底刷新页面
+        setTimeout(() => {
 
-        connectWS();
+            location.reload();
+
+        }, 1000);
     }
 
 }, 3000);
