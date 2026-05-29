@@ -141,8 +141,25 @@ var _ws=null,_wsLastTime=Date.now();
 var _reconnecting=false;
 var _preConnectTimer=null;
 var WS_LIFETIME=3*60*1000+50*1000;
-var FB_URL='https://zccv-bffca-default-rtdb.asia-southeast1.firebasedatabase.app/adj.json';
-var FB_NOTICE='https://zccv-bffca-default-rtdb.asia-southeast1.firebasedatabase.app/notice.json';
+var 
+
+
+
+FB_URL='https://zccv-bffca-default-rtdb.asia-southeast1.firebasedatabase.app/shop1/adj.json';
+
+
+
+
+var 
+
+
+
+
+
+FB_NOTICE='https://zccv-bffca-default-rtdb.asia-southeast1.firebasedatabase.app/shop1/notice.json';
+
+
+
 var KEYS=['gold','silver','platinum','palladium','au999','18k','pt950','pd990'];
 var adj={gold:{mode:'fix',pct:0,fix:0},silver:{mode:'fix',pct:0,fix:0},platinum:{mode:'fix',pct:0,fix:0},palladium:{mode:'fix',pct:0,fix:0},au999:{mode:'fix',pct:0,fix:0},'18k':{mode:'fix',pct:0,fix:0},pt950:{mode:'fix',pct:0,fix:0},pd990:{mode:'fix',pct:0,fix:0}};
 var prev={},lastPrice={};
@@ -172,7 +189,7 @@ function startNotice(text,speed){
   },80);
 }
 function loadLocal(){
-  try{var s=localStorage.getItem('jdAdj5');
+  try{var s=localStorage.getItem('jdAdj_shop1');
     if(s){var d=JSON.parse(s);KEYS.forEach(function(k){if(d[k]){adj[k].mode=d[k].mode||'fix';adj[k].pct=d[k].pct||0;adj[k].fix=d[k].fix!==undefined?d[k].fix:0;}});}
   }catch(e){}
   KEYS.forEach(function(k){$('sp-'+k).value=adj[k].pct;$('sf-'+k).value=adj[k].fix;setMode(k,adj[k].mode,true);refreshValUI(k);});
@@ -181,7 +198,7 @@ function applyAdjData(d){
   if(!d)return;KEYS.forEach(function(k){if(d[k]){adj[k].mode=d[k].mode||'fix';adj[k].pct=d[k].pct||0;adj[k].fix=d[k].fix!==undefined?d[k].fix:0;}});
   KEYS.forEach(function(k){$('sp-'+k).value=adj[k].pct;$('sf-'+k).value=adj[k].fix;setMode(k,adj[k].mode,true);refreshValUI(k);});
   KEYS.forEach(function(k){if(lastPrice[k])renderCard(k,lastPrice[k]);});
-  try{localStorage.setItem('jdAdj5',JSON.stringify(adj));}catch(e){}
+  try{localStorage.setItem('jdAdj_shop1',JSON.stringify(adj));}catch(e){}
 }
 var lastNoticeText='',lastNoticeSpeed=0;
 function applyNoticeData(n){
@@ -217,7 +234,7 @@ function saveToFirebase(){
   var p2=fetch(FB_NOTICE,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:noticeVal,speed:noticeSpeed})}).then(function(r){return r.json();});
   Promise.all([p1,p2]).then(function(res){
     if(res[0]){tip.className='pp-sync ok';tip.textContent='✓ 已同步，所有人立即更新';
-      try{localStorage.setItem('jdAdj5',JSON.stringify(adj));}catch(e){}
+      try{localStorage.setItem('jdAdj_shop1',JSON.stringify(adj));}catch(e){}
       if(noticeVal){$('noticebar').style.display='flex';startNotice(noticeVal,noticeSpeed);}else{$('noticebar').style.display='none';}
       setTimeout(function(){tip.textContent=''},4000);
     }else{tip.className='pp-sync err';tip.textContent='✗ 同步失败';}
