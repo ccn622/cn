@@ -47,8 +47,7 @@ canvas.chart{position:absolute;inset:0;width:100%;height:100%;}@keyframes fu{0%{
 .dot{width:7px;height:7px;border-radius:50%;background:var(--dim);flex-shrink:0;cursor:pointer;}
 .dot.live{background:#3DBA6F;box-shadow:0 0 10px #3DBA6F;animation:blink 2s infinite}
 .dot.err{background:#C94040}@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.lupd{font-size:10px;color:var(--dim);cursor:pointer;}
-.disclaimer{font-size:13px;font-weight:600;color:#E05555;letter-spacing:.12em;}
+.lupd{font-size:10px;color:var(--dim);cursor:pointer;}.disclaimer{font-size:13px;font-weight:600;color:#E05555;letter-spacing:.12em;}
 .hidden-trigger{position:fixed;bottom:0;right:0;width:44px;height:44px;z-index:100;cursor:default;}
 .noticebar{display:flex;align-items:center;gap:6px;padding:3px 28px;background:rgba(79,195,247,0.05);border-bottom:1px solid var(--line);font-size:11px;color:var(--dim);overflow:hidden;flex-shrink:0;}
 .notice-icon{color:var(--gold);flex-shrink:0;font-size:12px;}.notice-wrap{flex:1;overflow:hidden;position:relative;height:18px;}
@@ -91,159 +90,57 @@ canvas.chart{position:absolute;inset:0;width:100%;height:100%;}@keyframes fu{0%{
 .pp-val-pct.pos,.pp-val-fix.pos{color:#4DCB82}.pp-val-pct.neg,.pp-val-fix.neg{color:#E05555}.pp-val-pct.zero,.pp-val-fix.zero{color:var(--dim)}
 .pp-price-label{font-size:9px;color:var(--dim);letter-spacing:.12em;}.pp-price{font-family:'SimSun','宋体',serif;font-size:19px;color:var(--gold2);}
 .pp-reset{background:rgba(79,195,247,.08);border:1px solid var(--line);color:var(--dim);padding:2px 8px;border-radius:4px;font-size:10px;cursor:pointer;font-family:monospace;margin-top:2px;}
-.pp-reset:hover{color:var(--gold);border-color:var(--gold)}
-.pp-sync{font-size:10px;text-align:center;margin-top:8px;height:16px;letter-spacing:.1em;}
+.pp-reset:hover{color:var(--gold);border-color:var(--gold)}.pp-sync{font-size:10px;text-align:center;margin-top:8px;height:16px;letter-spacing:.1em;}
 .pp-sync.ok{color:#4DCB82}.pp-sync.err{color:#E05555}.pp-sync.ing{color:var(--gold3)}
 .pp-footer{margin-top:6px;font-size:10px;color:var(--dim);text-align:center;letter-spacing:.12em;}
-</style></head><body><div class="topbar">
+</style></head><body>
+<div class="topbar">
   <div style="min-width:80px"></div>
-  <div class="brand-center"> <div class="brand-zh">金典国际百货商城 · 今日回收价</div>
-    <div class="brand-sub">PRECIOUS METALS · LIVE QUOTES</div>
-  </div>
-  <div class="topright">
-    <button class="fs-btn" onclick="toggleFS()" title="全屏">[ ]</button>
-  </div>
-</div><div class="noticebar" id="noticebar" style="display:none"><span class="notice-icon">📢</span><div class="notice-wrap"><span class="notice-text" id="noticeText"></span></div></div>
+  <div class="brand-center"><div class="brand-zh">金典国际百货商城 · 今日回收价</div><div class="brand-sub">PRECIOUS METALS · LIVE QUOTES</div></div>
+  <div class="topright"><button class="fs-btn" onclick="toggleFS()" title="全屏">[ ]</button></div>
+</div>
+<div class="noticebar" id="noticebar" style="display:none"><span class="notice-icon">📢</span><div class="notice-wrap"><span class="notice-text" id="noticeText"></span></div></div>
 <div class="divline"><span class="divline-inner">REAL · TIME · MARKET · DATA</span></div>
 <div class="grid">
-  <div class="col" id="col-gold">
-    <div class="metal-tag">XAU / CNY</div>
-    <div class="metal-name g">黄 金</div>
-    <div class="price-label">回收价（元/克）</div>
-    <div class="price-cny neu" id="p-gold">———</div>
-    <div class="price-unit">CNY / GRAM</div>
-    <div class="chg neu" id="chg-gold">— —</div>
-    <div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('gold','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('gold','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('gold','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-gold"></canvas></div></div>
-  </div>
-  <div class="col" id="col-silver">
-    <div class="metal-tag">XAG / CNY</div>
-    <div class="metal-name s">白 银</div>
-    <div class="price-label">回收价（元/克）</div>
-    <div class="price-cny neu" id="p-silver">———</div>
-    <div class="price-unit">CNY / GRAM</div>
-    <div class="chg neu" id="chg-silver">— —</div>
-    <div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('silver','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('silver','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('silver','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-silver"></canvas></div></div>
-  </div> <div class="col" id="col-platinum">
-    <div class="metal-tag">XPT / CNY</div>
-    <div class="metal-name p">铂 金</div>
-    <div class="price-label">回收价（元/克）</div>
-    <div class="price-cny neu" id="p-platinum">———</div>
-    <div class="price-unit">CNY / GRAM</div>
-    <div class="chg neu" id="chg-platinum">— —</div>
-    <div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('platinum','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('platinum','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('platinum','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-platinum"></canvas></div></div>
-  </div>
-  <div class="col" id="col-palladium">
-    <div class="metal-tag">XPD / CNY</div>
-    <div class="metal-name d">钯 金</div>
-    <div class="price-label">回收价（元/克）</div>
-    <div class="price-cny neu" id="p-palladium">———</div>
-    <div class="price-unit">CNY / GRAM</div>
-    <div class="chg neu" id="chg-palladium">— —</div>
-    <div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('palladium','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('palladium','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('palladium','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-palladium"></canvas></div></div>
-  </div><div class="col" id="col-au999">
-    <div class="metal-tag">AU999</div>
-    <div class="metal-name a">Au999</div>
-    <div class="price-label">回收价（元/克）</div>
-    <div class="price-cny neu" id="p-au999">———</div>
-    <div class="price-unit">CNY / GRAM</div>
-    <div class="chg neu" id="chg-au999">— —</div>
-    <div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('au999','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('au999','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('au999','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-au999"></canvas></div></div>
-  </div>
-  <div class="col" id="col-18k">
-    <div class="metal-tag">18K GOLD</div>
-    <div class="metal-name k">18K</div>
-    <div class="price-label">回收价（元/克）</div>
-    <div class="price-cny neu" id="p-18k">———</div>
-    <div class="price-unit">CNY / GRAM</div>
-    <div class="chg neu" id="chg-18k">— —</div>
-    <div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('18k','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('18k','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('18k','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-18k"></canvas></div></div>
-  </div>
-  <div class="col" id="col-pt950">
-    <div class="metal-tag">PT950</div>
-    <div class="metal-name pt">Pt950</div>
-    <div class="price-label">回收价（元/克）</div>
-    <div class="price-cny neu" id="p-pt950">———</div>
-    <div class="price-unit">CNY / GRAM</div>
-    <div class="chg neu" id="chg-pt950">— —</div>
-    <div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('pt950','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('pt950','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('pt950','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-pt950"></canvas></div></div>
-  </div>
-  <div class="col" id="col-pd990">
-    <div class="metal-tag">PD990</div>
-    <div class="metal-name pd">Pd990</div>
-    <div class="price-label">回收价（元/克）</div>
-    <div class="price-cny neu" id="p-pd990">———</div>
-    <div class="price-unit">CNY / GRAM</div>
-    <div class="chg neu" id="chg-pd990">— —</div>
-    <div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('pd990','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('pd990','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('pd990','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-pd990"></canvas></div></div>
-  </div>
-</div><div class="bottombar">
-  <div class="status-wrap">
-    <div class="dot" id="dot" onclick="triggerStep1()"></div>
-    <span id="stxt">连接中</span>
-    <span class="lupd" id="lupd" onclick="triggerStep2()"></span>
-  </div>
+  <div class="col" id="col-gold"><div class="metal-tag">XAU / CNY</div><div class="metal-name g">黄 金</div><div class="price-label">回收价（元/克）</div><div class="price-cny neu" id="p-gold">———</div><div class="price-unit">CNY / GRAM</div><div class="chg neu" id="chg-gold">— —</div><div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('gold','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('gold','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('gold','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-gold"></canvas></div></div></div>
+  <div class="col" id="col-silver"><div class="metal-tag">XAG / CNY</div><div class="metal-name s">白 银</div><div class="price-label">回收价（元/克）</div><div class="price-cny neu" id="p-silver">———</div><div class="price-unit">CNY / GRAM</div><div class="chg neu" id="chg-silver">— —</div><div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('silver','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('silver','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('silver','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-silver"></canvas></div></div></div>
+  <div class="col" id="col-platinum"><div class="metal-tag">XPT / CNY</div><div class="metal-name p">铂 金</div><div class="price-label">回收价（元/克）</div><div class="price-cny neu" id="p-platinum">———</div><div class="price-unit">CNY / GRAM</div><div class="chg neu" id="chg-platinum">— —</div><div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('platinum','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('platinum','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('platinum','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-platinum"></canvas></div></div></div>
+  <div class="col" id="col-palladium"><div class="metal-tag">XPD / CNY</div><div class="metal-name d">钯 金</div><div class="price-label">回收价（元/克）</div><div class="price-cny neu" id="p-palladium">———</div><div class="price-unit">CNY / GRAM</div><div class="chg neu" id="chg-palladium">— —</div><div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('palladium','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('palladium','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('palladium','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-palladium"></canvas></div></div></div>
+  <div class="col" id="col-au999"><div class="metal-tag">AU999</div><div class="metal-name a">Au999</div><div class="price-label">回收价（元/克）</div><div class="price-cny neu" id="p-au999">———</div><div class="price-unit">CNY / GRAM</div><div class="chg neu" id="chg-au999">— —</div><div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('au999','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('au999','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('au999','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-au999"></canvas></div></div></div>
+  <div class="col" id="col-18k"><div class="metal-tag">18K GOLD</div><div class="metal-name k">18K</div><div class="price-label">回收价（元/克）</div><div class="price-cny neu" id="p-18k">———</div><div class="price-unit">CNY / GRAM</div><div class="chg neu" id="chg-18k">— —</div><div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('18k','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('18k','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('18k','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-18k"></canvas></div></div></div>
+  <div class="col" id="col-pt950"><div class="metal-tag">PT950</div><div class="metal-name pt">Pt950</div><div class="price-label">回收价（元/克）</div><div class="price-cny neu" id="p-pt950">———</div><div class="price-unit">CNY / GRAM</div><div class="chg neu" id="chg-pt950">— —</div><div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('pt950','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('pt950','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('pt950','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-pt950"></canvas></div></div></div>
+  <div class="col" id="col-pd990"><div class="metal-tag">PD990</div><div class="metal-name pd">Pd990</div><div class="price-label">回收价（元/克）</div><div class="price-cny neu" id="p-pd990">———</div><div class="price-unit">CNY / GRAM</div><div class="chg neu" id="chg-pd990">— —</div><div class="chart-area"><div class="chart-tabs"><div class="chart-tab active" onclick="switchTab('pd990','m5',this)">5分钟</div><div class="chart-tab" onclick="switchTab('pd990','m15',this)">15分钟</div><div class="chart-tab" onclick="switchTab('pd990','h1',this)">1小时</div></div><div class="chart-wrap"><canvas class="chart" id="cv-pd990"></canvas></div></div></div>
+</div>
+<div class="bottombar">
+  <div class="status-wrap"><div class="dot" id="dot" onclick="triggerStep1()"></div><span id="stxt">连接中</span><span class="lupd" id="lupd" onclick="triggerStep2()"></span></div>
   <div class="disclaimer">此行情仅供参考 · 不做交易价格</div>
 </div>
 <div class="hidden-trigger" onclick="triggerStep1()"></div>
-<div class="pwd-wrap" id="pwdWrap">
-  <input class="pwd-input" id="pwdInput" type="password" placeholder="···" maxlength="20" oninput="checkPwd()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-</div>
+<div class="pwd-wrap" id="pwdWrap"><input class="pwd-input" id="pwdInput" type="password" placeholder="···" maxlength="20" oninput="checkPwd()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
 <div class="premium-overlay" id="overlay" onclick="overlayClick(event)">
   <div class="premium-panel">
     <button class="pp-close" onclick="closePanel()">×</button>
     <div class="pp-title">溢价调节</div>
-    <div class="pp-sub">各品种独立调节 · 保存后全网同步</div>
-    <div class="pp-row">
-      <div class="pp-metal"><div class="pp-metal-name g">黄金</div><div class="pp-metal-sub">XAU</div></div>
-      <div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-gold" onclick="setMode('gold','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-gold" onclick="setMode('gold','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-gold"><button class="pp-btn" onclick="stepPct('gold',-0.5)">−</button><input type="range" class="pp-range g" id="sp-gold" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('gold')"><button class="pp-btn" onclick="stepPct('gold',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-gold"><button class="pp-btn" onclick="stepFix('gold',-10)">−</button><input type="range" class="pp-range g" id="sf-gold" min="-500" max="200" step="1" value="0" oninput="onSlideFix('gold')"><button class="pp-btn" onclick="stepFix('gold',10)">+</button></div></div>
-      <div class="pp-info"><div class="pp-val-pct zero" id="vp-gold">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-gold">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-gold">--</div><button class="pp-reset" onclick="resetOne('gold')">归零</button></div>
-    </div>  <div class="pp-row">
-      <div class="pp-metal"><div class="pp-metal-name s">白银</div><div class="pp-metal-sub">XAG</div></div>
-      <div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-silver" onclick="setMode('silver','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-silver" onclick="setMode('silver','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-silver"><button class="pp-btn" onclick="stepPct('silver',-0.5)">−</button><input type="range" class="pp-range s" id="sp-silver" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('silver')"><button class="pp-btn" onclick="stepPct('silver',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-silver"><button class="pp-btn" onclick="stepFix('silver',-0.5)">−</button><input type="range" class="pp-range s" id="sf-silver" min="-50" max="20" step="0.1" value="0" oninput="onSlideFix('silver')"><button class="pp-btn" onclick="stepFix('silver',10)">+</button></div></div>
-      <div class="pp-info"><div class="pp-val-pct zero" id="vp-silver">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-silver">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-silver">--</div><button class="pp-reset" onclick="resetOne('silver')">归零</button></div>
-    </div>
-    <div class="pp-row">
-      <div class="pp-metal"><div class="pp-metal-name p">铂金</div><div class="pp-metal-sub">XPT</div></div>
-      <div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-platinum" onclick="setMode('platinum','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-platinum" onclick="setMode('platinum','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-platinum"><button class="pp-btn" onclick="stepPct('platinum',-0.5)">−</button><input type="range" class="pp-range p" id="sp-platinum" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('platinum')"><button class="pp-btn" onclick="stepPct('platinum',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-platinum"><button class="pp-btn" onclick="stepFix('platinum',-10)">−</button><input type="range" class="pp-range p" id="sf-platinum" min="-500" max="200" step="1" value="0" oninput="onSlideFix('platinum')"><button class="pp-btn" onclick="stepFix('platinum',10)">+</button></div></div>
-      <div class="pp-info"><div class="pp-val-pct zero" id="vp-platinum">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-platinum">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-platinum">--</div><button class="pp-reset" onclick="resetOne('platinum')">归零</button></div>
-    </div>
-    <div class="pp-row">
-      <div class="pp-metal"><div class="pp-metal-name d">钯金</div><div class="pp-metal-sub">XPD</div></div>
-      <div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-palladium" onclick="setMode('palladium','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-palladium" onclick="setMode('palladium','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-palladium"><button class="pp-btn" onclick="stepPct('palladium',-0.5)">−</button><input type="range" class="pp-range d" id="sp-palladium" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('palladium')"><button class="pp-btn" onclick="stepPct('palladium',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-palladium"><button class="pp-btn" onclick="stepFix('palladium',-10)">−</button><input type="range" class="pp-range d" id="sf-palladium" min="-500" max="200" step="1" value="0" oninput="onSlideFix('palladium')"><button class="pp-btn" onclick="stepFix('palladium',10)">+</button></div></div>
-      <div class="pp-info"><div class="pp-val-pct zero" id="vp-palladium">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-palladium">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-palladium">--</div><button class="pp-reset" onclick="resetOne('palladium')">归零</button></div>
-    </div>
-    <div class="pp-row">
-      <div class="pp-metal"><div class="pp-metal-name a">Au999</div><div class="pp-metal-sub">足金</div></div>
-      <div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-au999" onclick="setMode('au999','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-au999" onclick="setMode('au999','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-au999"><button class="pp-btn" onclick="stepPct('au999',-0.5)">−</button><input type="range" class="pp-range a" id="sp-au999" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('au999')"><button class="pp-btn" onclick="stepPct('au999',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-au999"><button class="pp-btn" onclick="stepFix('au999',-10)">−</button><input type="range" class="pp-range a" id="sf-au999" min="-500" max="200" step="1" value="0" oninput="onSlideFix('au999')"><button class="pp-btn" onclick="stepFix('au999',10)">+</button></div></div>
-      <div class="pp-info"><div class="pp-val-pct zero" id="vp-au999">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-au999">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-au999">--</div><button class="pp-reset" onclick="resetOne('au999')">归零</button></div>
-    </div>
-    <div class="pp-row">
-      <div class="pp-metal"><div class="pp-metal-name k">18K</div><div class="pp-metal-sub">18K金</div></div>
-      <div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-18k" onclick="setMode('18k','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-18k" onclick="setMode('18k','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-18k"><button class="pp-btn" onclick="stepPct('18k',-0.5)">−</button><input type="range" class="pp-range k" id="sp-18k" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('18k')"><button class="pp-btn" onclick="stepPct('18k',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-18k"><button class="pp-btn" onclick="stepFix('18k',-10)">−</button><input type="range" class="pp-range k" id="sf-18k" min="-500" max="200" step="1" value="0" oninput="onSlideFix('18k')"><button class="pp-btn" onclick="stepFix('18k',10)">+</button></div></div>
-      <div class="pp-info"><div class="pp-val-pct zero" id="vp-18k">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-18k">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-18k">--</div><button class="pp-reset" onclick="resetOne('18k')">归零</button></div>
-    </div>
-    <div class="pp-row">
-      <div class="pp-metal"><div class="pp-metal-name pt">Pt950</div><div class="pp-metal-sub">铂950</div></div>
-      <div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-pt950" onclick="setMode('pt950','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-pt950" onclick="setMode('pt950','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-pt950"><button class="pp-btn" onclick="stepPct('pt950',-0.5)">−</button><input type="range" class="pp-range pt" id="sp-pt950" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('pt950')"><button class="pp-btn" onclick="stepPct('pt950',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-pt950"><button class="pp-btn" onclick="stepFix('pt950',-10)">−</button><input type="range" class="pp-range pt" id="sf-pt950" min="-500" max="200" step="1" value="0" oninput="onSlideFix('pt950')"><button class="pp-btn" onclick="stepFix('pt950',10)">+</button></div></div>
-      <div class="pp-info"><div class="pp-val-pct zero" id="vp-pt950">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-pt950">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-pt950">--</div><button class="pp-reset" onclick="resetOne('pt950')">归零</button></div>
-    </div>
-    <div class="pp-row">
-      <div class="pp-metal"><div class="pp-metal-name pd">Pd990</div><div class="pp-metal-sub">钯990</div></div>
-      <div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-pd990" onclick="setMode('pd990','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-pd990" onclick="setMode('pd990','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-pd990"><button class="pp-btn" onclick="stepPct('pd990',-0.5)">−</button><input type="range" class="pp-range pd" id="sp-pd990" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('pd990')"><button class="pp-btn" onclick="stepPct('pd990',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-pd990"><button class="pp-btn" onclick="stepFix('pd990',-10)">−</button><input type="range" class="pp-range pd" id="sf-pd990" min="-500" max="200" step="1" value="0" oninput="onSlideFix('pd990')"><button class="pp-btn" onclick="stepFix('pd990',10)">+</button></div></div>
-      <div class="pp-info"><div class="pp-val-pct zero" id="vp-pd990">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-pd990">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-pd990">--</div><button class="pp-reset" onclick="resetOne('pd990')">归零</button></div>
-    </div>
+    <div class="pp-sub">各品种独立调节 · 保存后全网同步</div>  <div class="pp-row"><div class="pp-metal"><div class="pp-metal-name g">黄金</div><div class="pp-metal-sub">XAU</div></div><div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-gold" onclick="setMode('gold','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-gold" onclick="setMode('gold','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-gold"><button class="pp-btn" onclick="stepPct('gold',-0.5)">−</button><input type="range" class="pp-range g" id="sp-gold" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('gold')"><button class="pp-btn" onclick="stepPct('gold',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-gold"><button class="pp-btn" onclick="stepFix('gold',-10)">−</button><input type="range" class="pp-range g" id="sf-gold" min="-500" max="200" step="1" value="0" oninput="onSlideFix('gold')"><button class="pp-btn" onclick="stepFix('gold',10)">+</button></div></div><div class="pp-info"><div class="pp-val-pct zero" id="vp-gold">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-gold">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-gold">--</div><button class="pp-reset" onclick="resetOne('gold')">归零</button></div></div>
+    <div class="pp-row"><div class="pp-metal"><div class="pp-metal-name s">白银</div><div class="pp-metal-sub">XAG</div></div><div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-silver" onclick="setMode('silver','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-silver" onclick="setMode('silver','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-silver"><button class="pp-btn" onclick="stepPct('silver',-0.5)">−</button><input type="range" class="pp-range s" id="sp-silver" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('silver')"><button class="pp-btn" onclick="stepPct('silver',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-silver"><button class="pp-btn" onclick="stepFix('silver',-0.5)">−</button><input type="range" class="pp-range s" id="sf-silver" min="-50" max="20" step="0.1" value="0" oninput="onSlideFix('silver')"><button class="pp-btn" onclick="stepFix('silver',10)">+</button></div></div><div class="pp-info"><div class="pp-val-pct zero" id="vp-silver">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-silver">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-silver">--</div><button class="pp-reset" onclick="resetOne('silver')">归零</button></div></div>
+    <div class="pp-row"><div class="pp-metal"><div class="pp-metal-name p">铂金</div><div class="pp-metal-sub">XPT</div></div><div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-platinum" onclick="setMode('platinum','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-platinum" onclick="setMode('platinum','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-platinum"><button class="pp-btn" onclick="stepPct('platinum',-0.5)">−</button><input type="range" class="pp-range p" id="sp-platinum" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('platinum')"><button class="pp-btn" onclick="stepPct('platinum',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-platinum"><button class="pp-btn" onclick="stepFix('platinum',-10)">−</button><input type="range" class="pp-range p" id="sf-platinum" min="-500" max="200" step="1" value="0" oninput="onSlideFix('platinum')"><button class="pp-btn" onclick="stepFix('platinum',10)">+</button></div></div><div class="pp-info"><div class="pp-val-pct zero" id="vp-platinum">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-platinum">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-platinum">--</div><button class="pp-reset" onclick="resetOne('platinum')">归零</button></div></div>
+    <div class="pp-row"><div class="pp-metal"><div class="pp-metal-name d">钯金</div><div class="pp-metal-sub">XPD</div></div><div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-palladium" onclick="setMode('palladium','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-palladium" onclick="setMode('palladium','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-palladium"><button class="pp-btn" onclick="stepPct('palladium',-0.5)">−</button><input type="range" class="pp-range d" id="sp-palladium" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('palladium')"><button class="pp-btn" onclick="stepPct('palladium',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-palladium"><button class="pp-btn" onclick="stepFix('palladium',-10)">−</button><input type="range" class="pp-range d" id="sf-palladium" min="-500" max="200" step="1" value="0" oninput="onSlideFix('palladium')"><button class="pp-btn" onclick="stepFix('palladium',10)">+</button></div></div><div class="pp-info"><div class="pp-val-pct zero" id="vp-palladium">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-palladium">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-palladium">--</div><button class="pp-reset" onclick="resetOne('palladium')">归零</button></div></div>
+    <div class="pp-row"><div class="pp-metal"><div class="pp-metal-name a">Au999</div><div class="pp-metal-sub">足金</div></div><div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-au999" onclick="setMode('au999','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-au999" onclick="setMode('au999','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-au999"><button class="pp-btn" onclick="stepPct('au999',-0.5)">−</button><input type="range" class="pp-range a" id="sp-au999" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('au999')"><button class="pp-btn" onclick="stepPct('au999',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-au999"><button class="pp-btn" onclick="stepFix('au999',-10)">−</button><input type="range" class="pp-range a" id="sf-au999" min="-500" max="200" step="1" value="0" oninput="onSlideFix('au999')"><button class="pp-btn" onclick="stepFix('au999',10)">+</button></div></div><div class="pp-info"><div class="pp-val-pct zero" id="vp-au999">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-au999">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-au999">--</div><button class="pp-reset" onclick="resetOne('au999')">归零</button></div></div>
+    <div class="pp-row"><div class="pp-metal"><div class="pp-metal-name k">18K</div><div class="pp-metal-sub">18K金</div></div><div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-18k" onclick="setMode('18k','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-18k" onclick="setMode('18k','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-18k"><button class="pp-btn" onclick="stepPct('18k',-0.5)">−</button><input type="range" class="pp-range k" id="sp-18k" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('18k')"><button class="pp-btn" onclick="stepPct('18k',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-18k"><button class="pp-btn" onclick="stepFix('18k',-10)">−</button><input type="range" class="pp-range k" id="sf-18k" min="-500" max="200" step="1" value="0" oninput="onSlideFix('18k')"><button class="pp-btn" onclick="stepFix('18k',10)">+</button></div></div><div class="pp-info"><div class="pp-val-pct zero" id="vp-18k">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-18k">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-18k">--</div><button class="pp-reset" onclick="resetOne('18k')">归零</button></div></div>
+    <div class="pp-row"><div class="pp-metal"><div class="pp-metal-name pt">Pt950</div><div class="pp-metal-sub">铂950</div></div><div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-pt950" onclick="setMode('pt950','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-pt950" onclick="setMode('pt950','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-pt950"><button class="pp-btn" onclick="stepPct('pt950',-0.5)">−</button><input type="range" class="pp-range pt" id="sp-pt950" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('pt950')"><button class="pp-btn" onclick="stepPct('pt950',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-pt950"><button class="pp-btn" onclick="stepFix('pt950',-10)">−</button><input type="range" class="pp-range pt" id="sf-pt950" min="-500" max="200" step="1" value="0" oninput="onSlideFix('pt950')"><button class="pp-btn" onclick="stepFix('pt950',10)">+</button></div></div><div class="pp-info"><div class="pp-val-pct zero" id="vp-pt950">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-pt950">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-pt950">--</div><button class="pp-reset" onclick="resetOne('pt950')">归零</button></div></div>
+    <div class="pp-row"><div class="pp-metal"><div class="pp-metal-name pd">Pd990</div><div class="pp-metal-sub">钯990</div></div><div class="pp-main"><div class="pp-mode-tabs"><button class="pp-mode-tab active" id="mt-pct-pd990" onclick="setMode('pd990','pct')">百分比 %</button><button class="pp-mode-tab" id="mt-fix-pd990" onclick="setMode('pd990','fix')">固定加减 ¥</button></div><div class="pp-pct-ctrl" id="pc-pd990"><button class="pp-btn" onclick="stepPct('pd990',-0.5)">−</button><input type="range" class="pp-range pd" id="sp-pd990" min="-80" max="50" step="0.5" value="0" oninput="onSlidePct('pd990')"><button class="pp-btn" onclick="stepPct('pd990',0.5)">+</button></div><div class="pp-fixed-ctrl pp-hidden" id="fc-pd990"><button class="pp-btn" onclick="stepFix('pd990',-10)">−</button><input type="range" class="pp-range pd" id="sf-pd990" min="-500" max="200" step="1" value="0" oninput="onSlideFix('pd990')"><button class="pp-btn" onclick="stepFix('pd990',10)">+</button></div></div><div class="pp-info"><div class="pp-val-pct zero" id="vp-pd990">0.00%</div><div class="pp-val-fix pp-hidden zero" id="vf-pd990">0 元/克</div><div class="pp-price-label">当前回收价</div><div class="pp-price" id="pv-pd990">--</div><button class="pp-reset" onclick="resetOne('pd990')">归零</button></div></div>
     <div style="margin:8px 0 4px;"><label style="font-size:10px;color:var(--dim);letter-spacing:.1em;">📢 公告内容（留空则不显示）</label><br><input id="noticeInput" type="text" maxlength="100" placeholder="输入公告内容..." style="width:100%;margin-top:4px;background:rgba(10,22,40,0.8);border:1px solid var(--line);border-radius:6px;color:var(--text);font-size:12px;padding:6px 10px;outline:none;font-family:inherit;box-sizing:border-box;"></div>
     <div style="margin:6px 0 4px;display:flex;align-items:center;gap:10px;"><label style="font-size:10px;color:var(--dim);letter-spacing:.1em;white-space:nowrap;">🐢 滚动速度</label><input id="noticeSpeed" type="range" min="5" max="60" value="25" style="flex:1;height:3px;accent-color:var(--gold);cursor:pointer;"><label style="font-size:10px;color:var(--dim);letter-spacing:.1em;white-space:nowrap;">🐇</label></div>
     <div class="pp-sync" id="syncTip"></div>
     <div class="pp-footer">调节后点下方按钮 · 所有访客价格同步更新</div>
-    <div style="text-align:center;margin-top:10px;">
-      <button onclick="saveToFirebase()" style="background:linear-gradient(135deg,#0277BD,#4FC3F7);border:none;color:#0A1628;padding:8px 32px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.1em;font-family:'Noto Serif SC',serif;">保存并同步所有人</button>
-    </div>
+    <div style="text-align:center;margin-top:10px;"><button onclick="saveToFirebase()" style="background:linear-gradient(135deg,#0277BD,#4FC3F7);border:none;color:#0A1628;padding:8px 32px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.1em;font-family:'Noto Serif SC',serif;">保存并同步所有人</button></div>
   </div>
-</div>
-<script>
+</div><script>
 var WS_URL='wss://ws.wwog.qzz.io';
 var _ws=null,_wsLastTime=Date.now();
+var _reconnecting=false;
+var _preConnectTimer=null;
+var WS_LIFETIME=3*60*1000+50*1000;
 var FB_URL='https://zccv-bffca-default-rtdb.asia-southeast1.firebasedatabase.app/adj.json';
 var FB_NOTICE='https://zccv-bffca-default-rtdb.asia-southeast1.firebasedatabase.app/notice.json';
 var KEYS=['gold','silver','platinum','palladium','au999','18k','pt950','pd990'];
@@ -273,15 +170,15 @@ function startNotice(text,speed){
     if(idx<chars.length){nt.textContent+=chars[idx];idx++;}
     else{clearInterval(noticeTimer);var dur=Math.max(8,60-speed)+'s';nt.style.animation='marquee '+dur+' linear infinite';}
   },80);
-}function loadLocal(){
+}
+function loadLocal(){
   try{var s=localStorage.getItem('jdAdj5');
     if(s){var d=JSON.parse(s);KEYS.forEach(function(k){if(d[k]){adj[k].mode=d[k].mode||'fix';adj[k].pct=d[k].pct||0;adj[k].fix=d[k].fix!==undefined?d[k].fix:0;}});}
   }catch(e){}
   KEYS.forEach(function(k){$('sp-'+k).value=adj[k].pct;$('sf-'+k).value=adj[k].fix;setMode(k,adj[k].mode,true);refreshValUI(k);});
 }
 function applyAdjData(d){
-  if(!d)return;
-  KEYS.forEach(function(k){if(d[k]){adj[k].mode=d[k].mode||'fix';adj[k].pct=d[k].pct||0;adj[k].fix=d[k].fix!==undefined?d[k].fix:0;}});
+  if(!d)return;KEYS.forEach(function(k){if(d[k]){adj[k].mode=d[k].mode||'fix';adj[k].pct=d[k].pct||0;adj[k].fix=d[k].fix!==undefined?d[k].fix:0;}});
   KEYS.forEach(function(k){$('sp-'+k).value=adj[k].pct;$('sf-'+k).value=adj[k].fix;setMode(k,adj[k].mode,true);refreshValUI(k);});
   KEYS.forEach(function(k){if(lastPrice[k])renderCard(k,lastPrice[k]);});
   try{localStorage.setItem('jdAdj5',JSON.stringify(adj));}catch(e){}
@@ -325,8 +222,7 @@ function saveToFirebase(){
       setTimeout(function(){tip.textContent=''},4000);
     }else{tip.className='pp-sync err';tip.textContent='✗ 同步失败';}
   }).catch(function(){tip.className='pp-sync err';tip.textContent='✗ 网络错误';});
-}
-function setMode(key,mode,silent){
+}function setMode(key,mode,silent){
   adj[key].mode=mode;
   $('mt-pct-'+key).className='pp-mode-tab'+(mode==='pct'?' active':'');
   $('mt-fix-'+key).className='pp-mode-tab'+(mode==='fix'?' active':'');
@@ -342,7 +238,8 @@ function refreshValUI(key){
   if(a.mode==='pct'){var el=$('vp-'+key),sign=a.pct>0?'+':'';el.textContent=sign+a.pct.toFixed(2)+'%';el.className='pp-val-pct '+(a.pct>0?'pos':a.pct<0?'neg':'zero');}
   else{var el=$('vf-'+key),sign=a.fix>0?'+':'';el.textContent=sign+(Number.isInteger(a.fix)?a.fix:a.fix.toFixed(2))+' 元/克';el.className='pp-val-fix '+(a.fix>0?'pos':a.fix<0?'neg':'zero');}
   var p=lastPrice[key];$('pv-'+key).textContent=p?applyAdj(p,key).toFixed(2)+' 元/克':'-- 元/克';
-}function onSlidePct(key){adj[key].pct=parseFloat($('sp-'+key).value)||0;refreshValUI(key);if(lastPrice[key])renderCard(key,lastPrice[key]);}
+}
+function onSlidePct(key){adj[key].pct=parseFloat($('sp-'+key).value)||0;refreshValUI(key);if(lastPrice[key])renderCard(key,lastPrice[key]);}
 function stepPct(key,d){var nv=Math.min(50,Math.max(-80,Math.round((adj[key].pct+d)*10)/10));adj[key].pct=nv;$('sp-'+key).value=nv;refreshValUI(key);if(lastPrice[key])renderCard(key,lastPrice[key]);}
 function onSlideFix(key){adj[key].fix=parseFloat($('sf-'+key).value)||0;refreshValUI(key);if(lastPrice[key])renderCard(key,lastPrice[key]);}
 function stepFix(key,d){var nv=Math.min(200,Math.max(-500,Math.round((adj[key].fix+d)*10)/10));adj[key].fix=nv;$('sf-'+key).value=nv;refreshValUI(key);if(lastPrice[key])renderCard(key,lastPrice[key]);}
@@ -365,8 +262,7 @@ function pushChartPoint(key,cny){
   if(chartCounters[key]%8===0){HIST[key].m15.push({t:now,v:cny});if(HIST[key].m15.length>80)HIST[key].m15.shift();}
   if(chartCounters[key]%30===0){HIST[key].h1.push({t:now,v:cny});if(HIST[key].h1.length>60)HIST[key].h1.shift();}
   drawChart(key);
-}
-function switchTab(key,tab,el){activeTab[key]=tab;var tabs=el.parentNode.querySelectorAll('.chart-tab');tabs.forEach(function(t){t.classList.remove('active')});el.classList.add('active');drawChart(key);}
+}function switchTab(key,tab,el){activeTab[key]=tab;var tabs=el.parentNode.querySelectorAll('.chart-tab');tabs.forEach(function(t){t.classList.remove('active')});el.classList.add('active');drawChart(key);}
 function drawChart(key){var canvas=$('cv-'+key);if(!canvas)return;
   var points=HIST[key][activeTab[key]];
   var wrap=canvas.parentNode,W=wrap.clientWidth,H=wrap.clientHeight;
@@ -410,70 +306,76 @@ function drawChart(key){var canvas=$('cv-'+key);if(!canvas)return;
   drawDot(maxIdx,'rgba(232,208,128,0.7)','H:'+vals[maxIdx].toFixed(1));
   drawDot(minIdx,'rgba(160,140,100,0.6)','L:'+vals[minIdx].toFixed(1));
 }window.addEventListener('resize',function(){KEYS.forEach(function(k){drawChart(k)})});
-function connectWS(){
-  setStatus('','连接中');
-  _ws=new WebSocket(WS_URL);
-  _wsLastTime=Date.now();
-  _ws.onopen=function(){
+
+// 统一绑定WS事件
+function attachWsHandlers(ws){
+  ws.onopen=function(){
+    _reconnecting=false;
     setStatus('live','已连接');
     _wsLastTime=Date.now();
+    clearTimeout(_preConnectTimer);
+    _preConnectTimer=setTimeout(preConnect,WS_LIFETIME);
   };
-  _ws.onmessage=function(e){
+  ws.onmessage=function(e){
     try{
       var data=JSON.parse(e.data);
-      // 心跳包
       if(data.type==='ping'){_wsLastTime=Date.now();return;}
-      // 时间更新
-      if(data['时间']){
-        $('lupd').textContent=data['时间'];
-        _wsLastTime=Date.now();
-      }
-      // 黄金
-      if(data['黄金']!==undefined){
-        var g=parseFloat(data['黄金']);
-        lastPrice['gold']=g;
-        lastPrice['au999']=g*0.999;
-        lastPrice['18k']=g*0.7475;
-      }
-      // 白银
-      if(data['白银']!==undefined){
-        lastPrice['silver']=parseFloat(data['白银']);
-      }
-      // 铂金
-      if(data['铂金']!==undefined){
-        var p=parseFloat(data['铂金']);
-        lastPrice['platinum']=p;
-        lastPrice['pt950']=p*0.942;
-      }
-      // 钯金
-      if(data['钯金']!==undefined){
-        var d=parseFloat(data['钯金']);
-        lastPrice['palladium']=d;
-        lastPrice['pd990']=d*0.9499;
-      }
+      if(data.type==='closed'){_wsLastTime=Date.now();setStatus('','休市中');if(data['时间'])$('lupd').textContent=data['时间'];return;}
+      if(data['时间']){$('lupd').textContent=data['时间'];_wsLastTime=Date.now();}
+      if(data['黄金']!==undefined){var g=parseFloat(data['黄金']);lastPrice['gold']=g;lastPrice['au999']=g*0.999;lastPrice['18k']=g*0.7475;}
+      if(data['白银']!==undefined){lastPrice['silver']=parseFloat(data['白银']);}
+      if(data['铂金']!==undefined){var p=parseFloat(data['铂金']);lastPrice['platinum']=p;lastPrice['pt950']=p*0.942;}
+      if(data['钯金']!==undefined){var d=parseFloat(data['钯金']);lastPrice['palladium']=d;lastPrice['pd990']=d*0.9499;}
       KEYS.forEach(function(k){if(lastPrice[k])renderCard(k,lastPrice[k]);});
       setStatus('live','实时更新中');
     }catch(ex){}
   };
-  _ws.onerror=function(){
-    setStatus('err','连接错误');
-  };
-  _ws.onclose=function(){
-    setStatus('err','连接断开');
+  ws.onerror=function(){setStatus('err','连接错误');};
+  ws.onclose=function(){
+    if(_reconnecting)return;
+    _reconnecting=true;
+    clearTimeout(_preConnectTimer);
+    setStatus('err','重连中...');
+    setTimeout(function(){connectWS();},2000);
   };
 }
-// 每3秒检查一次是否假死
+
+// 主动预连：3分50秒提前建好新连接，旧连接关了再切，零冲突
+function preConnect(){
+  var newWs=new WebSocket(WS_URL);
+  newWs.onopen=function(){
+    _reconnecting=true;
+    if(_ws){try{_ws.close();}catch(e){}}
+    _ws=newWs;
+    _reconnecting=false;
+    attachWsHandlers(_ws);
+    setStatus('live','已连接');
+    _wsLastTime=Date.now();
+    clearTimeout(_preConnectTimer);
+    _preConnectTimer=setTimeout(preConnect,WS_LIFETIME);
+  };
+  newWs.onerror=function(){try{newWs.close();}catch(e){}};
+}
+
+// 被动重连及初始连接
+function connectWS(){
+  setStatus('','连接中');  _ws=new WebSocket(WS_URL);
+  _wsLastTime=Date.now();
+  attachWsHandlers(_ws);
+}
+
+// 每3秒检查假死
 setInterval(function(){
   var diff=Date.now()-_wsLastTime;
-  // 超过8秒，提示延迟
-  if(diff>8000){
-    setStatus('','数据延迟中...');
+  if(diff>25000){setStatus('','数据延迟中...');}
+  if(diff>60000&&!_reconnecting){
+    _reconnecting=true;
+    clearTimeout(_preConnectTimer);
+    setStatus('err','重连中...');
+    setTimeout(function(){connectWS();},1000);
   }
-  // 超过15秒，彻底刷新页面
-  if(diff>15000){
-    setStatus('err','数据卡死，页面重载中...');
-    setTimeout(function(){location.reload();},1000);
-  }},3000);
+},3000);
+
 loadLocal();
 connectWS();
 startSSE();
