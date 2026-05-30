@@ -342,7 +342,7 @@ function attachWsHandlers(ws){
       if(data['黄金']!==undefined){var g=parseFloat(data['黄金']);lastPrice['gold']=g;lastPrice['au999']=g*0.999;lastPrice['18k']=g*0.7475;}
       if(data['白银']!==undefined){lastPrice['silver']=parseFloat(data['白银']);}
       if(data['铂金']!==undefined){var p=parseFloat(data['铂金']);lastPrice['platinum']=p;lastPrice['pt950']=p*0.942;}
-      if(data['钯金']!==undefined){var d=parseFloat(data['钯金']);lastPrice['palladium']=d;lastPrice['pd990']=d*0.9499;}
+      if(data['钯金']!==undefined){var d=parseFloat(data['钯金']);lastPrice['palladium']=d;lastPrice['pd990']=d*0.95;}
       KEYS.forEach(function(k){if(lastPrice[k])renderCard(k,lastPrice[k]);});
       setStatus('live','实时更新中');
     }catch(ex){}
