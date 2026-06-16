@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>老银牌银饰</title>
+<style>
+:root{--gold:#FFD700;--line:rgba(255,215,0,0.25);--dim:rgba(255,215,0,0.6);}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','SimSun',serif;overflow:hidden;}
+
+/* ============ 视频背景（自托管，循环播放） ============ */
+.video-bg{position:fixed;inset:0;z-index:0;background:#000;overflow:hidden;}
+.video-bg video{
+  position:absolute;top:50%;left:50%;
+  width:100%;height:100%;
+  object-fit:cover;          /* 自动铺满裁切，不会有黑边 */
+  transform:translate(-50%,-50%);
+}
+/* 视频上的暗化遮罩，让文字更清晰 */
+.video-bg::after{
+  content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 70%,rgba(0,0,0,.75) 100%);
+  pointer-events:none;
+}
+
+/* ============ 顶部标题 ============ */
+.top-title{
+  position:fixed;top:0;left:0;right:0;z-index:10;
+  text-align:center;padding:22px 16px 16px;
+  pointer-events:none;
+}
+.top-title h1{
+  font-size:30px;font-weight:700;letter-spacing:.35em;
+  color:var(--gold);
+  text-shadow:0 0 18px rgba(255,215,0,0.45);
+  display:inline-block;
+}
+
+/* ============ 右上角：全屏 + 静音按钮 ============ */
+.top-controls{
+  position:fixed;top:7px;right:6px;z-index:999;
+  display:flex;gap:6px;
+}
+.ctrl-btn{
+  background:rgba(0,0,0,.35);
+  border:1px solid var(--line);
+  color:var(--dim);
+  padding:2px 7px;
+  border-radius:3px;
+  font-size:11px;
+  cursor:pointer;
+  line-height:1.6;
+  transition:all .2s;
+  font-family:inherit;
+}
+.ctrl-btn:hover,.ctrl-btn:active{border-color:var(--gold);color:var(--gold);}
+
+/* ============ 底部固定容器：公告条 + 信息条 依次堆叠，不会重叠 ============ */
+.bottom-stack{
+  position:fixed;left:0;right:0;bottom:0;z-index:15;
+  display:flex;flex-direction:column;
+}
+
+/* ============ 公告滚动条：白底红字 ============ */
+.notice-bar{
+  height:34px;display:none;align-items:center;
+  background:#ffffff;
+  border-top:2px solid var(--gold);
+  border-bottom:1px solid rgba(0,0,0,.08);
+  box-shadow:0 -2px 10px rgba(0,0,0,.25);
+  overflow:hidden;
+}
+.notice-bar.show{display:flex;}
+.notice-tag{
+  background:#C8102E;color:#fff;flex-shrink:0;
+  font-size:13px;font-weight:700;letter-spacing:.15em;
+  height:100%;display:flex;align-items:center;
+  padding:0 14px 0 16px;
+  clip-path:polygon(0 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,0 100%);
+  padding-right:22px;
+}
+.notice-scroll-wrap{flex:1;overflow:hidden;height:100%;display:flex;align-items:center;}
+.notice-scroll{
+  white-space:nowrap;font-size:14px;font-weight:700;color:#C8102E;
+  letter-spacing:.1em;padding-left:100%;
+  animation:scrollx 22s linear infinite;
+}
+@keyframes scrollx{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+
+/* ============ 底部信息条 ============ */
+.ref-bar{
+  background:linear-gradient(180deg,rgba(10,8,2,.92),rgba(0,0,0,.96));
+  border-top:1px solid var(--line);
+  padding:7px 12px;
+  display:flex;align-items:center;
+  gap:12px;
+}
+
+/* 左侧：信号灯 + 标签 */
+.ref-left{
+  display:flex;align-items:center;gap:8px;
+  flex-shrink:0;
+}
+.status-dot{
+  width:11px;height:11px;border-radius:50%;
+  background:#999;box-shadow:0 0 8px rgba(255,255,255,.2);
+  transition:background .3s,box-shadow .3s;
+  flex-shrink:0;
+}
+.status-dot.live{background:#3DBA6F;box-shadow:0 0 10px #3DBA6F;animation:blink 2s infinite;}
+.status-dot.warn{background:#E8B83C;box-shadow:0 0 10px #E8B83C;animation:blink 1.2s infinite;}
+.status-dot.err{background:#E04C4C;box-shadow:0 0 10px #E04C4C;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+.ref-label{
+  font-size:11px;letter-spacing:.18em;color:var(--dim);white-space:nowrap;
+}
+
+/* 右侧：三个品种价格卡片，等分宽度，绝不溢出 */
+.ref-items{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  flex:1;
+  min-width:0;
+}
+.ref-item{
+  min-width:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,rgba(255,215,0,.06),rgba(255,215,0,.02));
+  border:1px solid rgba(255,215,0,.18);
+  border-radius:7px;
+  padding:4px 4px 5px;
+  overflow:hidden;
+}
+.ref-name{
+  font-size:clamp(9px,2.6vw,11px);
+  color:var(--dim);letter-spacing:.12em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+}
+.ref-mid{
+  display:flex;align-items:baseline;gap:5px;margin-top:1px;
+  min-width:0;
+}
+.ref-val{
+  font-family:'Courier New',monospace;
+  font-size:clamp(13px,4.2vw,19px);font-weight:700;
+  background:linear-gradient(135deg,#FFD700,#FFF3C4,#FFD700);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:.02em;white-space:nowrap;
+}
+.ref-chg{
+  font-size:clamp(8px,2.2vw,11px);font-weight:700;
+  padding:1px 4px;border-radius:3px;white-space:nowrap;
+  visibility:hidden;
+}
+.ref-chg.up{color:#4DCB82;background:rgba(77,203,130,.15);}
+.ref-chg.dn{color:#FF6B6B;background:rgba(255,107,107,.15);}
+.ref-unit{font-size:clamp(8px,2vw,9px);color:rgba(255,255,255,.35);letter-spacing:.08em;margin-top:1px;}
+
+@media(max-width:640px){
+  .top-title h1{font-size:22px;letter-spacing:.22em;}
+  .ref-bar{flex-direction:column;align-items:stretch;gap:6px;padding:7px 10px;}
+  .ref-left{justify-content:center;}
+  .notice-scroll{font-size:12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- 视频背景：自托管，自动播放、静音、循环 -->
+<div class="video-bg">
+  <video id="bgVideo" autoplay muted loop playsinline>
+    <source src="https://video-proxy.a1269136698b.workers.dev/?u=https://github.com/ccn622/cn/releases/download/v1.0/VID_20260612_155237.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- 标题 -->
+<div class="top-title"><h1>老银牌银饰</h1></div>
+
+<!-- 全屏 / 静音 按钮 -->
+<div class="top-controls">
+  <button class="ctrl-btn" id="muteBtn" onclick="toggleMute()" title="静音/取消静音">🔇</button>
+  <button class="ctrl-btn" id="fsBtn" onclick="toggleFS()" title="全屏">[ ]</button>
+</div>
+
+<!-- 底部固定区域：公告条（可隐藏） + 信息条，依次堆叠 -->
+<div class="bottom-stack">
+  <!-- 公告滚动条：白底红字，与主站溢价板公告同步，无内容则不显示 -->
+  <div class="notice-bar" id="noticeBar">
+    <div class="notice-tag">公告:</div>
+    <div class="notice-scroll-wrap">
+      <div class="notice-scroll" id="noticeScroll"></div>
+    </div>
+  </div>
+
+  <!-- 信息条：信号灯+标签（左） / 三品种价格卡片（右，含涨跌标志） -->
+  <div class="ref-bar">
+    <div class="ref-left">
+      <div class="status-dot" id="statusDot"></div>
+      <div class="ref-label">回收参考价 · 不做交易价</div>
+    </div>
+    <div class="ref-items">
+      <div class="ref-item">
+        <span class="ref-name">黄金999</span>
+        <div class="ref-mid">
+          <span class="ref-val" id="val-au999">———</span>
+          <span class="ref-chg" id="chg-au999"></span>
+        </div>
+        <span class="ref-unit">元/克</span>
+      </div>
+      <div class="ref-item">
+        <span class="ref-name">铂金950</span>
+        <div class="ref-mid">
+          <span class="ref-val" id="val-pt950">———</span>
+          <span class="ref-chg" id="chg-pt950"></span>
+        </div>
+        <span class="ref-unit">元/克</span>
+      </div>
+      <div class="ref-item">
+        <span class="ref-name">钯金990</span>
+        <div class="ref-mid">
+          <span class="ref-val" id="val-pd990">———</span>
+          <span class="ref-chg" id="chg-pd990"></span>
+        </div>
+        <span class="ref-unit">元/克</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ====== 全屏 ====== */
+function toggleFS(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+  }else{
+    document.exitFullscreen && document.exitFullscreen();
+  }
+}
+
+/* ====== 静音 / 取消静音（实时切换，无需重载） ====== */
+var _muted = true;
+function toggleMute(){
+  var v = document.getElementById('bgVideo');
+  _muted = !_muted;
+  v.muted = _muted;
+  if(!_muted){ v.play().catch(function(){}); }
+  document.getElementById('muteBtn').textContent = _muted ? '🔇' : '🔊';
+}
+
+/* ====== 数据源：与主站保持一致 ====== */
+var WS_URL  = 'wss://ws.wwog.qzz.io';
+var FB_URL    = 'https://zccv-bffca-default-rtdb.asia-southeast1.firebasedatabase.app/shop1/adj.json';
+var FB_NOTICE = 'https://zccv-bffca-default-rtdb.asia-southeast1.firebasedatabase.app/shop1/notice.json';
+
+var adj = {
+  au999:{mode:'fix',pct:0,fix:0},
+  pt950:{mode:'fix',pct:0,fix:0},
+  pd990:{mode:'fix',pct:0,fix:0}
+};
+var lastPrice = {};   // 最新原始基准价
+var prevShown = {};   // 上一次显示的价格（用于计算涨跌）
+
+function applyAdj(base,key){
+  var a = adj[key];
+  return a.mode === 'pct' ? base*(1+a.pct/100) : base + a.fix;
+}
+
+function render(key, base){
+  if (base === undefined || base === null) return;
+  var v = applyAdj(base, key);
+  var el = document.getElementById('val-'+key);
+  var chgEl = document.getElementById('chg-'+key);
+  if (el) el.textContent = v.toFixed(2);
+
+  if (chgEl){
+    if (prevShown[key] !== undefined){
+      var diff = v - prevShown[key];
+      if (Math.abs(diff) >= 0.005){
+        var up = diff > 0;
+        chgEl.textContent = (up ? '▲' : '▼') + Math.abs(diff).toFixed(2);
+        chgEl.className = 'ref-chg ' + (up ? 'up' : 'dn');
+        chgEl.style.visibility = 'visible';
+      }
+    }
+  }
+  prevShown[key] = v;
+}
+
+function applyAdjData(d){
+  if (!d) return;
+  ['au999','pt950','pd990'].forEach(function(k){
+    if (d[k]){
+      adj[k].mode = d[k].mode || 'fix';
+      adj[k].pct  = d[k].pct  || 0;
+      adj[k].fix  = d[k].fix !== undefined ? d[k].fix : 0;
+    }
+  });
+  ['au999','pt950','pd990'].forEach(function(k){
+    if (lastPrice[k] !== undefined) render(k, lastPrice[k]);
+  });
+}
+
+/* ====== 公告（溢价板内容）同步 ====== */
+var noticeBar = document.getElementById('noticeBar');
+var noticeScroll = document.getElementById('noticeScroll');
+function applyNoticeData(n){
+  if (n && n.text){
+    noticeScroll.textContent = n.text;
+    var speed = n.speed || 25;
+    var dur = Math.max(8, 60 - speed) + 's';
+    noticeScroll.style.animation = 'scrollx ' + dur + ' linear infinite';
+    noticeBar.classList.add('show');
+  } else {
+    noticeBar.classList.remove('show');
+    noticeScroll.textContent = '';
+  }
+}
+
+/* ====== 状态信号灯 ====== */
+var statusDot = document.getElementById('statusDot');
+function setStatus(state){
+  statusDot.className = 'status-dot ' + state; // live / warn / err
+}
+
+/* ====== Firebase 实时数据（adj + 公告）====== */
+function startSSE(){
+  try{
+    var adjES = new EventSource(FB_URL);
+    adjES.addEventListener('put',   function(e){ try{ var m=JSON.parse(e.data); if(m&&m.data) applyAdjData(m.data); }catch(ex){} });
+    adjES.addEventListener('patch', function(e){ try{ var m=JSON.parse(e.data); if(m&&m.data) applyAdjData(m.data); }catch(ex){} });
+
+    var noticeES = new EventSource(FB_NOTICE);
+    noticeES.addEventListener('put',   function(e){ try{ var m=JSON.parse(e.data); applyNoticeData(m.data); }catch(ex){} });
+    noticeES.addEventListener('patch', function(e){ try{ var m=JSON.parse(e.data); applyNoticeData(m.data); }catch(ex){} });
+  }catch(ex){}
+}
+fetch(FB_URL).then(r=>r.json()).then(applyAdjData).catch(function(){});
+fetch(FB_NOTICE).then(r=>r.json()).then(applyNoticeData).catch(function(){});
+startSSE();
+
+/* ====== WebSocket 实时行情 ====== */
+var _ws=null, _wsLastTime=Date.now(), _reconnecting=false;
+
+function attachWsHandlers(ws){
+  ws.onopen = function(){
+    _reconnecting = false;
+    _wsLastTime = Date.now();
+    setStatus('live');
+  };
+  ws.onmessage = function(e){
+    try{
+      var data = JSON.parse(e.data);
+      if (data.type === 'ping'){ _wsLastTime = Date.now(); return; }
+      if (data['时间']) _wsLastTime = Date.now();
+      if (data['黄金'] !== undefined){
+        var g = parseFloat(data['黄金']);
+        lastPrice['au999'] = g * 0.999;
+        render('au999', lastPrice['au999']);
+      }
+      if (data['铂金'] !== undefined){
+        var p = parseFloat(data['铂金']);
+        lastPrice['pt950'] = p * 0.942;
+        render('pt950', lastPrice['pt950']);
+      }
+      if (data['钯金'] !== undefined){
+        var d = parseFloat(data['钯金']);
+        lastPrice['pd990'] = d * 0.95;
+        render('pd990', lastPrice['pd990']);
+      }
+    }catch(ex){}
+  };
+  ws.onerror = function(){
+    setStatus('err');
+    _reconnecting = false;
+  };
+  ws.onclose = function(){
+    if (_reconnecting) return;
+    _reconnecting = true;
+    setStatus('warn');
+    setTimeout(connectWS, 2000);
+  };
+}
+function connectWS(){
+  setStatus('warn');
+  try{
+    _ws = new WebSocket(WS_URL);
+    _wsLastTime = Date.now();
+    attachWsHandlers(_ws);
+  }catch(ex){
+    setStatus('err');
+  }
+}
+connectWS();
+
+setInterval(function(){
+  var diff = Date.now() - _wsLastTime;
+  if (diff > 25000){
+    setStatus('warn');
+  } else if (!_reconnecting){
+    setStatus('live');
+  }
+  if (diff > 60000 && !_reconnecting){
+    _reconnecting = true;
+    setStatus('err');
+    setTimeout(connectWS, 1000);
+  }
+}, 3000);
+</script>
+</body>
+</html>
