@@ -101,15 +101,17 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
 .ref-bar{
   background:linear-gradient(180deg,rgba(10,8,2,.92),rgba(0,0,0,.96));
   border-top:1px solid var(--line);
-  padding:7px 12px;
+  padding:5px 12px;
   display:flex;align-items:center;
-  gap:12px;
+  gap:10px;
 }
 
 /* 左侧：信号灯 + 标签 */
 .ref-left{
   display:flex;align-items:center;gap:8px;
   flex-shrink:0;
+  padding-right:10px;
+  border-right:1px solid var(--line);
 }
 .status-dot{
   width:11px;height:11px;border-radius:50%;
@@ -122,9 +124,10 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
 .status-dot.err{background:#E04C4C;box-shadow:0 0 10px #E04C4C;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
 .ref-label{
-  font-size:11px;letter-spacing:.15em;color:var(--dim);white-space:nowrap;
-  line-height:1.5;text-align:center;
+  font-size:11px;letter-spacing:.1em;color:var(--dim);white-space:nowrap;
+  line-height:1.3;
 }
+.ref-label-sub{opacity:.8;}
 
 /* 右侧：三个品种价格卡片，等分宽度，绝不溢出 */
 .ref-items{
@@ -141,7 +144,7 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
   background:linear-gradient(180deg,rgba(255,215,0,.06),rgba(255,215,0,.02));
   border:1px solid rgba(255,215,0,.18);
   border-radius:7px;
-  padding:6px 4px;
+  padding:5px 4px;
   overflow:hidden;
 }
 .ref-name{
@@ -150,7 +153,7 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
 }
 .ref-mid{
-  display:flex;align-items:center;justify-content:center;gap:5px;margin-top:3px;
+  display:flex;align-items:center;justify-content:center;gap:5px;margin-top:2px;
   min-width:0;
 }
 .ref-val{
@@ -170,8 +173,10 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
 
 @media(max-width:640px){
   .top-title h1{font-size:22px;letter-spacing:.22em;}
-  .ref-bar{flex-direction:column;align-items:stretch;gap:6px;padding:7px 10px;}
-  .ref-left{justify-content:center;}
+  .ref-bar{padding:4px 8px;gap:8px;}
+  .ref-label{font-size:10px;}
+  .ref-label-sub{display:none;}
+  .ref-left{padding-right:8px;}
   .notice-scroll{font-size:12px;}
 }
 </style>
@@ -208,7 +213,7 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
   <div class="ref-bar">
     <div class="ref-left">
       <div class="status-dot" id="statusDot"></div>
-      <div class="ref-label">回收参考价<br>不做交易价</div>
+      <div class="ref-label">回收参考价<span class="ref-label-sub"> · 不做交易价</span></div>
     </div>
     <div class="ref-items">
       <div class="ref-item">
