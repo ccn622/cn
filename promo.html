@@ -34,7 +34,16 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
   font-size:30px;font-weight:700;letter-spacing:.35em;
   color:var(--gold);
   text-shadow:0 0 18px rgba(255,215,0,0.45);
-  display:inline-block;
+  display:inline-flex;align-items:center;gap:14px;
+}
+.top-title h1::before,
+.top-title h1::after{
+  content:'';width:34px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold));
+  flex-shrink:0;
+}
+.top-title h1::after{
+  background:linear-gradient(90deg,var(--gold),transparent);
 }
 
 /* ============ 右上角：全屏 + 静音按钮 ============ */
@@ -65,15 +74,15 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
 /* ============ 公告滚动条：白底红字 ============ */
 .notice-bar{
   height:34px;display:none;align-items:center;
-  background:#ffffff;
+  background:linear-gradient(180deg,#F5E6C8,#EDD9A8);
   border-top:2px solid var(--gold);
-  border-bottom:1px solid rgba(0,0,0,.08);
+  border-bottom:1px solid rgba(139,105,20,.25);
   box-shadow:0 -2px 10px rgba(0,0,0,.25);
   overflow:hidden;
 }
 .notice-bar.show{display:flex;}
 .notice-tag{
-  background:#C8102E;color:#fff;flex-shrink:0;
+  background:#8B6914;color:#FFF3C4;flex-shrink:0;
   font-size:13px;font-weight:700;letter-spacing:.15em;
   height:100%;display:flex;align-items:center;
   padding:0 14px 0 16px;
@@ -82,7 +91,7 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
 }
 .notice-scroll-wrap{flex:1;overflow:hidden;height:100%;display:flex;align-items:center;}
 .notice-scroll{
-  white-space:nowrap;font-size:14px;font-weight:700;color:#C8102E;
+  white-space:nowrap;font-size:14px;font-weight:700;color:#8B3A1A;
   letter-spacing:.1em;padding-left:100%;
   animation:scrollx 22s linear infinite;
 }
@@ -113,7 +122,8 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
 .status-dot.err{background:#E04C4C;box-shadow:0 0 10px #E04C4C;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
 .ref-label{
-  font-size:11px;letter-spacing:.18em;color:var(--dim);white-space:nowrap;
+  font-size:11px;letter-spacing:.15em;color:var(--dim);white-space:nowrap;
+  line-height:1.5;text-align:center;
 }
 
 /* 右侧：三个品种价格卡片，等分宽度，绝不溢出 */
@@ -144,19 +154,18 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
 }
 .ref-val{
   font-family:'Courier New',monospace;
-  font-size:clamp(13px,4.2vw,19px);font-weight:700;
+  font-size:clamp(17px,5.6vw,25px);font-weight:700;
   background:linear-gradient(135deg,#FFD700,#FFF3C4,#FFD700);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   letter-spacing:.02em;white-space:nowrap;
 }
 .ref-chg{
-  font-size:clamp(8px,2.2vw,11px);font-weight:700;
-  padding:1px 4px;border-radius:3px;white-space:nowrap;
+  font-size:clamp(9px,2.4vw,12px);font-weight:700;
+  padding:1px 5px;border-radius:3px;white-space:nowrap;
   visibility:hidden;
 }
 .ref-chg.up{color:#4DCB82;background:rgba(77,203,130,.15);}
 .ref-chg.dn{color:#FF6B6B;background:rgba(255,107,107,.15);}
-.ref-unit{font-size:clamp(8px,2vw,9px);color:rgba(255,255,255,.35);letter-spacing:.08em;margin-top:1px;}
 
 @media(max-width:640px){
   .top-title h1{font-size:22px;letter-spacing:.22em;}
@@ -198,7 +207,7 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
   <div class="ref-bar">
     <div class="ref-left">
       <div class="status-dot" id="statusDot"></div>
-      <div class="ref-label">回收参考价 · 不做交易价</div>
+      <div class="ref-label">回收参考价<br>不做交易价</div>
     </div>
     <div class="ref-items">
       <div class="ref-item">
