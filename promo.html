@@ -124,7 +124,7 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
 .status-dot.err{background:#E04C4C;box-shadow:0 0 10px #E04C4C;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
 .ref-label{
-  font-size:11px;letter-spacing:.1em;color:var(--dim);white-space:nowrap;
+  font-size:12px;letter-spacing:.1em;color:var(--dim);white-space:nowrap;
   line-height:1.3;
 }
 .ref-label-sub{opacity:.8;}
@@ -141,7 +141,7 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
   position:relative;
   min-width:0;
   display:flex;flex-direction:row;align-items:baseline;justify-content:center;
-  gap:3px;
+  gap:7px;
   background:linear-gradient(180deg,rgba(255,215,0,.06),rgba(255,215,0,.02));
   border:1px solid rgba(255,215,0,.18);
   border-radius:7px;
@@ -149,8 +149,8 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
   overflow:hidden;
 }
 .ref-name{
-  font-size:clamp(10px,2.6vw,12px);font-weight:700;
-  color:var(--dim);letter-spacing:.02em;
+  font-size:clamp(11px,2.9vw,13px);font-weight:700;
+  color:#EDE7D6;letter-spacing:.02em;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   flex-shrink:1;min-width:0;
 }
@@ -160,14 +160,14 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
 }
 .ref-val{
   font-family:'Courier New',monospace;
-  font-size:clamp(11px,3.6vw,18px);font-weight:700;
+  font-size:clamp(13px,4vw,20px);font-weight:700;
   background:linear-gradient(135deg,#FFD700,#FFF3C4,#FFD700);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   letter-spacing:0;white-space:nowrap;
 }
 .ref-chg{
   position:absolute;top:2px;right:4px;
-  font-size:clamp(7px,1.6vw,9px);font-weight:700;
+  font-size:clamp(8px,1.8vw,10px);font-weight:700;
   line-height:1;white-space:nowrap;
   visibility:hidden;
 }
@@ -177,11 +177,15 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
 @media(max-width:640px){
   .top-title h1{font-size:22px;letter-spacing:.22em;}
   .ref-bar{padding:4px 8px;gap:8px;}
-  .ref-label{font-size:10px;}
+  .ref-label{font-size:11px;}
   .ref-label-sub{display:none;}
   .ref-left{padding-right:8px;}
   .ref-name-num{display:none;}
   .notice-scroll{font-size:12px;}
+}
+@media(max-width:480px){
+  .ref-item{gap:4px;padding:5px 3px;}
+  .ref-val{font-size:clamp(12px,3.6vw,16px);}
 }
 </style>
 </head>
@@ -221,21 +225,21 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
     </div>
     <div class="ref-items">
       <div class="ref-item">
-        <span class="ref-name">黄金<span class="ref-name-num">999</span></span>
+        <span class="ref-name">黄金<span class="ref-name-num">999</span>:</span>
         <div class="ref-mid">
           <span class="ref-val" id="val-au999">———</span>
           <span class="ref-chg" id="chg-au999"></span>
         </div>
       </div>
       <div class="ref-item">
-        <span class="ref-name">铂金<span class="ref-name-num">950</span></span>
+        <span class="ref-name">铂金<span class="ref-name-num">950</span>:</span>
         <div class="ref-mid">
           <span class="ref-val" id="val-pt950">———</span>
           <span class="ref-chg" id="chg-pt950"></span>
         </div>
       </div>
       <div class="ref-item">
-        <span class="ref-name">钯金<span class="ref-name-num">990</span></span>
+        <span class="ref-name">钯金<span class="ref-name-num">990</span>:</span>
         <div class="ref-mid">
           <span class="ref-val" id="val-pd990">———</span>
           <span class="ref-chg" id="chg-pd990"></span>
