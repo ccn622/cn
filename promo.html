@@ -138,38 +138,41 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
   min-width:0;
 }
 .ref-item{
+  position:relative;
   min-width:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;
+  display:flex;flex-direction:row;align-items:baseline;justify-content:center;
+  gap:3px;
   background:linear-gradient(180deg,rgba(255,215,0,.06),rgba(255,215,0,.02));
   border:1px solid rgba(255,215,0,.18);
   border-radius:7px;
-  padding:5px 4px;
+  padding:6px 4px;
   overflow:hidden;
 }
 .ref-name{
-  font-size:clamp(11px,3.2vw,14px);font-weight:700;
-  color:var(--dim);letter-spacing:.1em;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+  font-size:clamp(10px,2.6vw,12px);font-weight:700;
+  color:var(--dim);letter-spacing:.02em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  flex-shrink:1;min-width:0;
 }
 .ref-mid{
-  display:flex;align-items:center;justify-content:center;gap:5px;margin-top:2px;
-  min-width:0;
+  display:flex;align-items:baseline;justify-content:center;gap:3px;
+  flex-shrink:0;
 }
 .ref-val{
   font-family:'Courier New',monospace;
-  font-size:clamp(17px,5.6vw,25px);font-weight:700;
+  font-size:clamp(11px,3.6vw,18px);font-weight:700;
   background:linear-gradient(135deg,#FFD700,#FFF3C4,#FFD700);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  letter-spacing:.02em;white-space:nowrap;
+  letter-spacing:0;white-space:nowrap;
 }
 .ref-chg{
-  font-size:clamp(9px,2.4vw,12px);font-weight:700;
-  padding:1px 5px;border-radius:3px;white-space:nowrap;
+  position:absolute;top:2px;right:4px;
+  font-size:clamp(7px,1.6vw,9px);font-weight:700;
+  line-height:1;white-space:nowrap;
   visibility:hidden;
 }
-.ref-chg.up{color:#4DCB82;background:rgba(77,203,130,.15);}
-.ref-chg.dn{color:#FF6B6B;background:rgba(255,107,107,.15);}
+.ref-chg.up{color:#4DCB82;}
+.ref-chg.dn{color:#FF6B6B;}
 
 @media(max-width:640px){
   .top-title h1{font-size:22px;letter-spacing:.22em;}
@@ -177,6 +180,7 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
   .ref-label{font-size:10px;}
   .ref-label-sub{display:none;}
   .ref-left{padding-right:8px;}
+  .ref-name-num{display:none;}
   .notice-scroll{font-size:12px;}
 }
 </style>
@@ -217,21 +221,21 @@ html,body{width:100%;height:100%;background:#000;font-family:'Noto Serif SC','Si
     </div>
     <div class="ref-items">
       <div class="ref-item">
-        <span class="ref-name">黄金999</span>
+        <span class="ref-name">黄金<span class="ref-name-num">999</span></span>
         <div class="ref-mid">
           <span class="ref-val" id="val-au999">———</span>
           <span class="ref-chg" id="chg-au999"></span>
         </div>
       </div>
       <div class="ref-item">
-        <span class="ref-name">铂金950</span>
+        <span class="ref-name">铂金<span class="ref-name-num">950</span></span>
         <div class="ref-mid">
           <span class="ref-val" id="val-pt950">———</span>
           <span class="ref-chg" id="chg-pt950"></span>
         </div>
       </div>
       <div class="ref-item">
-        <span class="ref-name">钯金990</span>
+        <span class="ref-name">钯金<span class="ref-name-num">990</span></span>
         <div class="ref-mid">
           <span class="ref-val" id="val-pd990">———</span>
           <span class="ref-chg" id="chg-pd990"></span>
